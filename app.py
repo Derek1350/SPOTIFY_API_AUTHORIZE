@@ -55,7 +55,7 @@ def callback():
       }
     print("Authorization Code:", code)
     response=requests.post(url=authorize_url,headers=headers,data=form)
-    return response.json()
+    return [response.json(),code]
 
 @app.route('/refresh-token')
 def refreshToken():
