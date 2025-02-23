@@ -55,7 +55,16 @@ def callback():
       }
     print("Authorization Code:", code)
     response=requests.post(url=authorize_url,headers=headers,data=form)
-    return response.json()
+    data=response.json()
+    return {
+        "access_token": data['access_token'],
+        "refresh_token": data['refresh_token'],
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "scope": "playlist-modify-private user-read-email user-read-private",
+        "token_generated_time":time.time(),
+        "token_expire_time":time.time()+3600
+    }
 
 @app.route('/refresh-token')
 def refreshToken():
@@ -75,12 +84,13 @@ def refreshToken():
         data=response.json()
         return {
         "access_token": data['access_token'],
+        "refresh_token": refresh_token,
         "token_type": "Bearer",
         "expires_in": 3600,
         "scope": "playlist-modify-private user-read-email user-read-private",
         "token_generated_time":time.time(),
         "token_expire_time":time.time()+3600
-    }
+        }
 
 
 
